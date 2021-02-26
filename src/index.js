@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import CSVReader from 'react-csv-reader';
-import { GoogleMap, Polygon } from '@react-google-maps/api';
+import { GoogleMap, Polygon, Marker } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 import './styles.css';
 
@@ -23,6 +23,7 @@ function App() {
   const [state, setState] = useState('');
   const [lga, setLga] = useState('');
   const [size, setSize] = useState(null);
+  const [showPath, setShowPath] = useState(false);
 
   useEffect(() => {
     setCenter({ lat: 6.439744, lng: 3.456023 });
@@ -45,7 +46,6 @@ function App() {
           className='no-print'
           style={{
             display: 'flex',
-            // padding: '2rem 1rem',
             flexDirection: 'column',
           }}
         >
@@ -171,18 +171,34 @@ function App() {
               center={center}
             >
               <Polygon paths={paths} options={options} />
-              {/* {popup} */}
+              {showPath &&
+                paths.map((e, i) => (
+                  <Marker
+                    key={Math.random()}
+                    position={e}
+                    label={(i + 1).toString()}
+                  />
+                ))}
             </GoogleMap>
           )}
         </div>
         {paths.length ? (
-          <button
-            className='no-print'
-            onClick={() => window.print()}
-            style={{ marginTop: '3rem' }}
-          >
-            Download
-          </button>
+          <>
+            <button
+              className='no-print'
+              onClick={() => setShowPath(!showPath)}
+              style={{ marginTop: '3rem' }}
+            >
+              {!showPath ? 'Show Path' : 'Hide Path'}
+            </button>
+            <button
+              className='no-print'
+              onClick={() => window.print()}
+              style={{ marginTop: '3rem', marginLeft: '2rem' }}
+            >
+              Download
+            </button>
+          </>
         ) : null}
       </div>
     </div>
