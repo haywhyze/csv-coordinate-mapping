@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import CSVReader from 'react-csv-reader';
-import { GoogleMap, Polygon, Marker } from '@react-google-maps/api';
-import Geocode from 'react-geocode';
-import './styles.css';
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import CSVReader from "react-csv-reader";
+import { GoogleMap, Polygon, Marker } from "@react-google-maps/api";
+import Geocode from "react-geocode";
+import "./styles.css";
 
-Geocode.setApiKey('AIzaSyCuprhlOtAFpOfhaYMs5fYdjdnnla57BLg');
-Geocode.setLocationType('ROOFTOP');
-// Geocode.enableDebug();
+Geocode.setApiKey("AIzaSyCuprhlOtAFpOfhaYMs5fYdjdnnla57BLg");
+Geocode.setLocationType("ROOFTOP");
+Geocode.enableDebug();
 
 const google = window.google;
 
 function App() {
   const mapContainerStyle = {
-    height: '500px',
-    width: '100%',
+    height: "500px",
+    width: "100%"
   };
 
   const [paths, setPaths] = useState([]);
   const [data, setData] = useState([]);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
-  const [state, setState] = useState('');
-  const [lga, setLga] = useState('');
+  const [state, setState] = useState("");
+  const [lga, setLga] = useState("");
+  const [lgaType, setLgaType] = useState("");
   const [size, setSize] = useState(null);
   const [showPath, setShowPath] = useState(false);
 
@@ -30,23 +31,23 @@ function App() {
   }, []);
 
   const options = {
-    fillColor: 'lemongreen',
+    fillColor: "lemongreen",
     fillOpacity: 0.1,
-    strokeColor: 'black',
+    strokeColor: "black",
     strokeOpacity: 1,
     strokeWeight: 2,
     clickable: false,
-    zIndex: 1,
+    zIndex: 1
   };
 
   return (
-    <div className='App'>
-      <div className='data-view'>
+    <div className="App">
+      <div className="data-view">
         <div
-          className='no-print'
+          className="no-print"
           style={{
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column"
           }}
         >
           <CSVReader
@@ -55,7 +56,7 @@ function App() {
               const formatted = data
                 .map((e) => ({
                   lat: Number(e.latitude || e.Latitude),
-                  lng: Number(e.longitude || e.Longitude),
+                  lng: Number(e.longitude || e.Longitude)
                 }))
                 .filter((e) => e.lng && e.lat);
               // console.dir(formatted);
@@ -64,9 +65,9 @@ function App() {
           />
           <div
             style={{
-              paddingTop: '1rem',
-              display: 'flex',
-              justifyContent: 'space-between',
+              paddingTop: "1rem",
+              display: "flex",
+              justifyContent: "space-between"
             }}
           >
             <button
@@ -74,11 +75,23 @@ function App() {
                 if (!data[0]) return;
                 setPaths(data);
                 setCenter(data[0]);
-                Geocode.fromLatLng(data[0].lat, data[0].lng).then(
+                Geocode.fromLatLng(data[1].lat, data[1].lng).then(
                   (response) => {
                     const address = response.results[0];
-                    setState(address.address_components[3].long_name);
-                    setLga(address.address_components[2].long_name);
+                    setLgaType(
+                      address.address_components.length > 4 ? "LGA" : "City"
+                    );
+                    setState(
+                      address.address_components[
+                        address.address_components.length - 2
+                      ].long_name
+                    );
+                    setLga(
+                      address.address_components[
+                        address.address_components.length - 3
+                      ].long_name
+                    );
+                    console.log(address.address_components);
                   },
                   (error) => {
                     console.error(error);
@@ -92,21 +105,21 @@ function App() {
                     (
                       google.maps.geometry.spherical.computeArea(test) / 10000
                     ).toFixed(4)
-                  ) + ' Ha'
+                  ) + " Ha"
                 );
               }}
             >
               Upload
             </button>
-            {document.querySelector('#react-csv-reader-input') &&
-            document.querySelector('#react-csv-reader-input').value ? (
+            {document.querySelector("#react-csv-reader-input") &&
+            document.querySelector("#react-csv-reader-input").value ? (
               <button
                 onClick={() => {
                   setPaths([]);
                   setData([]);
                   setCenter({ lat: 9.0765, lng: 7.3986 });
                   document.querySelector(
-                    '#react-csv-reader-input'
+                    "#react-csv-reader-input"
                   ).value = null;
                 }}
               >
@@ -118,29 +131,29 @@ function App() {
         {paths.length ? (
           <>
             <div
-              className='details'
+              className="details"
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                textAlign: 'left',
-                lineHeight: 2,
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "left",
+                lineHeight: 2
               }}
             >
               <span>
                 <strong>State:</strong> {state}
               </span>
               <span>
-                <strong>LGA:</strong> {lga}
+                <strong>{lgaType === "City" ? "City" : "LGA"}:</strong> {lga}
               </span>
 
               <span>
                 <strong>Land Size:</strong> {size}
               </span>
             </div>
-            <table style={{ marginTop: '2rem' }}>
+            <table style={{ marginTop: "2rem" }}>
               <thead>
                 <tr>
-                  <th style={{ textAlign: 'center' }} colSpan='2'>
+                  <th style={{ textAlign: "center" }} colSpan="2">
                     Coordinates
                   </th>
                 </tr>
@@ -161,11 +174,11 @@ function App() {
           </>
         ) : null}
       </div>
-      <div className='data'>
-        <div className='App-map'>
+      <div className="data">
+        <div className="App-map">
           {paths && (
             <GoogleMap
-              id='marker-example'
+              id="marker-example"
               mapContainerStyle={mapContainerStyle}
               zoom={16}
               center={center}
@@ -185,16 +198,16 @@ function App() {
         {paths.length ? (
           <>
             <button
-              className='no-print'
+              className="no-print"
               onClick={() => setShowPath(!showPath)}
-              style={{ marginTop: '3rem' }}
+              style={{ marginTop: "3rem" }}
             >
-              {!showPath ? 'Show Path' : 'Hide Path'}
+              {!showPath ? "Show Path" : "Hide Path"}
             </button>
             <button
-              className='no-print'
+              className="no-print"
               onClick={() => window.print()}
-              style={{ marginTop: '3rem', marginLeft: '2rem' }}
+              style={{ marginTop: "3rem", marginLeft: "2rem" }}
             >
               Download
             </button>
@@ -205,5 +218,5 @@ function App() {
   );
 }
 
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
