@@ -195,26 +195,28 @@ function App() {
                 <Polygon key={Math.random()} paths={e} options={options} />
               ))}
 
-              {/* {showPath &&
-                paths.map((e, i) => (
-                  <Marker
-                    key={Math.random()}
-                    position={e}
-                    label={(i + 1).toString()}
-                  />
-                ))} */}
+              {showPath &&
+                paths.map((path) =>
+                  path.map((e, i) => (
+                    <Marker
+                      key={Math.random()}
+                      position={e}
+                      label={(i + 1).toString()}
+                    />
+                  ))
+                )}
             </GoogleMap>
           )}
         </div>
         {paths.length ? (
           <>
-            {/* <button
-              className="no-print"
+            <button
+              className='no-print'
               onClick={() => setShowPath(!showPath)}
-              style={{ marginTop: "3rem" }}
+              style={{ marginTop: '3rem' }}
             >
-              {!showPath ? "Show Path" : "Hide Path"}
-            </button> */}
+              {!showPath ? 'Show Path' : 'Hide Path'}
+            </button>
             <button
               className='no-print'
               onClick={() => window.print()}
