@@ -21,6 +21,14 @@
 
 .details {
   margin-top: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+}
+
+.details button {
+  padding: 10px;
+  background-color: white;
+  cursor: pointer;
 }
 
 table {
@@ -39,7 +47,6 @@ th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
-
 
 /* The popup bubble styling. */
 .popup-bubble {
@@ -69,7 +76,7 @@ tr:nth-child(even) {
 
 /* This element draws the tip. */
 .popup-bubble-anchor::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;

@@ -11,7 +11,7 @@
     "react-csv-reader": "^3.3.0",
     "react-dom": "16.8.6",
     "react-geocode": "^0.2.3",
-    "react-scripts": "2.1.8"
+    "react-scripts": "^4.0.3"
   },
   "devDependencies": {
     "typescript": "3.3.3"
