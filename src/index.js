@@ -13,7 +13,7 @@ const google = window.google;
 
 function App() {
   const mapContainerStyle = {
-    height: '700px',
+    height: '500px',
     width: '100%',
   };
 
