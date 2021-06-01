@@ -87,11 +87,11 @@ function App() {
                       detail.state =
                         address.address_components[
                           address.address_components.length - 2
-                        ].long_name;
+                        ]?.long_name;
                       detail.lga =
                         address.address_components[
                           address.address_components.length - 3
-                        ].long_name;
+                        ]?.long_name;
                       detail.size =
                         parseFloat(
                           (
