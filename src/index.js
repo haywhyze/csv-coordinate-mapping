@@ -79,7 +79,8 @@ function App() {
                   let test = data.map(
                     (e) => new google.maps.LatLng(e.lat, e.lng)
                   );
-                  Geocode.fromLatLng(data[1].lat, data[1].lng).then(
+                  console.log(data)
+                  Geocode.fromLatLng(data[2].lat, data[2].lng).then(
                     (response) => {
                       const address = response.results[0];
                       detail.lgaType =
