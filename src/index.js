@@ -79,20 +79,26 @@ function App() {
                   let test = data.map(
                     (e) => new google.maps.LatLng(e.lat, e.lng)
                   );
-                  console.log(data)
                   Geocode.fromLatLng(data[2].lat, data[2].lng).then(
                     (response) => {
                       const address = response.results[0];
-                      detail.lgaType =
-                        address.address_components.length > 4 ? 'LGA' : 'City';
-                      detail.state =
-                        address.address_components[
-                          address.address_components.length - 2
-                        ]?.long_name;
-                      detail.lga =
-                        address.address_components[
-                          address.address_components.length - 3
-                        ]?.long_name;
+                      console.log(address);
+
+                      const foundState = address.address_components.find(
+                        (comp) =>
+                          comp.types.includes('administrative_area_level_1')
+                      );
+                      const foundLGA = address.address_components.find(
+                        (comp) =>
+                          comp.types.includes('administrative_area_level_2')
+                      );
+
+                      detail.state = foundState.long_name;
+                      detail.lga = foundLGA.long_name;
+
+                      // detail.lgaType =
+                      //   address.address_components.length > 4 ? 'LGA' : 'City';
+
                       detail.size =
                         parseFloat(
                           (
