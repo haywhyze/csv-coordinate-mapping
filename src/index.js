@@ -82,6 +82,7 @@ function App() {
                   Geocode.fromLatLng(data[2].lat, data[2].lng).then(
                     (response) => {
                       const address = response.results[0];
+                      console.log(address)
                       const foundState = address.address_components.find(
                         (comp) =>
                           comp.types.includes('administrative_area_level_1')
