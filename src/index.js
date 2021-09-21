@@ -82,22 +82,25 @@ function App() {
                   Geocode.fromLatLng(data[2].lat, data[2].lng).then(
                     (response) => {
                       const address = response.results[0];
-                      console.log(address);
-
                       const foundState = address.address_components.find(
                         (comp) =>
                           comp.types.includes('administrative_area_level_1')
                       );
-                      const foundLGA = address.address_components.find(
-                        (comp) =>
-                          comp.types.includes('administrative_area_level_2')
+                      const foundLGA = address.address_components.find((comp) =>
+                        comp.types.includes('administrative_area_level_2')
                       );
 
-                      detail.state = foundState.long_name;
-                      detail.lga = foundLGA.long_name;
+                      let foundLocality;
+                      if (!foundLGA)
+                        foundLocality = address.address_components.find(
+                          (comp) => comp.types.includes('locality')
+                        );
 
-                      // detail.lgaType =
-                      //   address.address_components.length > 4 ? 'LGA' : 'City';
+                      detail.state = foundState.long_name;
+                      detail.lga = foundLGA
+                        ? foundLGA?.long_name
+                        : foundLocality.long_name;
+                      detail.lgaType = foundLGA ? 'LGA' : 'City';
 
                       detail.size =
                         parseFloat(
@@ -152,7 +155,9 @@ function App() {
                     <strong>State:</strong> {e.state}
                   </span>
                   <span>
-                    <strong>{e.lgaType === 'City' ? 'City' : 'LGA'}:</strong>{' '}
+                    <strong>
+                      {e.lgaType === 'City' ? 'City' : 'LGA'}:
+                    </strong>{' '}
                     {e.lga}
                   </span>
                   <span>
