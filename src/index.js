@@ -6,8 +6,8 @@ import Geocode from 'react-geocode';
 import './styles.css';
 
 Geocode.setApiKey('AIzaSyCuprhlOtAFpOfhaYMs5fYdjdnnla57BLg');
-Geocode.setLocationType('ROOFTOP');
-// Geocode.enableDebug();
+// Geocode.setLocationType('ROOFTOP');
+Geocode.enableDebug();
 
 const google = window.google;
 
@@ -82,7 +82,7 @@ function App() {
                   Geocode.fromLatLng(data[2].lat, data[2].lng).then(
                     (response) => {
                       const address = response.results[0];
-                      console.log(address)
+                      console.log(address);
                       const foundState = address.address_components.find(
                         (comp) =>
                           comp.types.includes('administrative_area_level_1')
@@ -129,9 +129,8 @@ function App() {
                     setData([]);
                     setDetails([]);
                     setCenter({ lat: 6.439744, lng: 3.456023 });
-                    document.querySelector(
-                      '#react-csv-reader-input'
-                    ).value = null;
+                    document.querySelector('#react-csv-reader-input').value =
+                      null;
                   }}
                 >
                   Clear
@@ -156,9 +155,7 @@ function App() {
                     <strong>State:</strong> {e.state}
                   </span>
                   <span>
-                    <strong>
-                      {e.lgaType === 'City' ? 'City' : 'LGA'}:
-                    </strong>{' '}
+                    <strong>{e.lgaType === 'City' ? 'City' : 'LGA'}:</strong>{' '}
                     {e.lga}
                   </span>
                   <span>
